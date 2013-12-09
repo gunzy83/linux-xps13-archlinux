@@ -2,8 +2,8 @@
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux               # Build stock -ARCH kernel
-#pkgbase=linux-custom       # Build kernel with a different name
+#pkgbase=linux               # Build stock -ARCH kernel
+pkgbase=linux-xps13       # Build kernel with a different name
 _srcname=linux-3.12
 pkgver=3.12.2
 pkgrel=1
@@ -19,14 +19,17 @@ source=("http://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'criu-no-expert.patch')
+        'criu-no-expert.patch'
+        'xps13.patch')
+        
 md5sums=('cc6ee608854e0da4b64f6c1ff8b6398c'
          '97453b56d6a999b5a4b0899b4e28fabe'
          '798bca5d2f0a1505c9b86a5227a2b339'
          '8cd452ae4f74f11dc09b25a0270b07f1'
          'eb14dcfd80c00852ef81ded6e826826a'
          '98beb36f9b8cf16e58de2483ea9985e3'
-         'd50c1ac47394e9aec637002ef3392bd1')
+         'd50c1ac47394e9aec637002ef3392bd1'
+         'b1607a002a3d1d30a1724218ffec5217')
 
 _kernelname=${pkgbase#linux}
 
@@ -53,6 +56,9 @@ prepare() {
   # allow criu without expert option set
   # patch from fedora
   patch -Np1 -i "${srcdir}/criu-no-expert.patch"
+  
+  # apply the xps 13 cypress touchpad simulated multitouch patch
+  patch -Np1 -i "${srcdir}/xps13.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
