@@ -20,8 +20,7 @@ source=("http://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
         'linux.preset'
         'change-default-console-loglevel.patch'
         'criu-no-expert.patch'
-        'xps13.patch'
-        'xhci-ring.patch')
+        'xps13.patch')
         
 md5sums=('cc6ee608854e0da4b64f6c1ff8b6398c'
          '9e75be8b127e58f1a76c0015eabb12ae'
@@ -30,8 +29,7 @@ md5sums=('cc6ee608854e0da4b64f6c1ff8b6398c'
          'eb14dcfd80c00852ef81ded6e826826a'
          '98beb36f9b8cf16e58de2483ea9985e3'
          'd50c1ac47394e9aec637002ef3392bd1'
-         'b1607a002a3d1d30a1724218ffec5217'
-         'edde957c16648b7695706336b79a8d75')
+         'b1607a002a3d1d30a1724218ffec5217')
 
 _kernelname=${pkgbase#linux}
 
@@ -61,10 +59,6 @@ prepare() {
   
   # apply the xps 13 cypress touchpad simulated multitouch patch
   patch -Np1 -i "${srcdir}/xps13.patch"
-
-  # apply a patch for xhci-ring.c to attempt a fix for ethernet lockups in the ac88179_178a usb ethernet hub
-  # http://www.spinics.net/lists/linux-usb/msg97176.html
-  patch -Np1 -i "${srcdir}/xhci-ring.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
