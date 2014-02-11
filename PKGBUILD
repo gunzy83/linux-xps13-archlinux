@@ -1,12 +1,12 @@
-# $Id: PKGBUILD 204475 2014-01-20 20:06:17Z tpowa $
+# $Id: PKGBUILD 204910 2014-01-31 09:11:18Z thomas $
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
 pkgbase=linux               # Build stock -ARCH kernel
 #pkgbase=linux-custom       # Build kernel with a different name
 _srcname=linux-3.12
-pkgver=3.12.8
-pkgrel=1
+pkgver=3.12.9
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -26,9 +26,10 @@ source=("http://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
         'rpc_pipe-remove-the-clntXX-dir-if-creating-the-pipe-fails.patch'
         'sunrpc-add-an-info-file-for-the-dummy-gssd-pipe.patch'
         'rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-notification-fails.patch'
+        '0001-x86-x32-Correct-invalid-use-of-user-timespec-in-the-.patch'
 )
 md5sums=('cc6ee608854e0da4b64f6c1ff8b6398c'
-         '03d34842e3a1197d17055610f62627b8'
+         '0d539fc9bc799663caf0f383d9252d36'
          'a9281e90e529795eaf10b45d70ab2868'
          '6000a9c7bd83081a65611d9dfbdd8eda'
          'eb14dcfd80c00852ef81ded6e826826a'
@@ -39,15 +40,16 @@ md5sums=('cc6ee608854e0da4b64f6c1ff8b6398c'
          '88eef9d3b5012ef7e82af1af8cc4e517'
          'cec0bb8981936eab2943b2009b7a6fff'
          '88d9cddf9e0050a76ec4674f264fb2a1'
-         'cb9016630212ef07b168892fbcfd4e5d')
+         'cb9016630212ef07b168892fbcfd4e5d'
+         '336d2c4afd7ee5f2bdf0dcb1a54df4b2')
 
 _kernelname=${pkgbase#linux}
 
 # module.symbols md5sums
 # x86_64
-# 23ef8d9dae0c916c9e1a7a07b77f797d  /lib/modules/3.12.6-1-ARCH/modules.symbols
+# b09c63a0b6a5d819c1de0e9933902e9b  /lib/modules/3.12.9-1-ARCH/modules.symbols
 # i686
-# eadbff034e17f92ccb4a7737302f3dbd  /lib/modules/3.12.6-1-ARCH/modules.symbols
+# fff24e378eada043f40a875551a8aeec  /lib/modules/3.12.9-1-ARCH/modules.symbols
 
 prepare() {
   cd "${srcdir}/${_srcname}"
@@ -77,6 +79,9 @@ prepare() {
   patch -Np1 -i "${srcdir}/sunrpc-add-an-info-file-for-the-dummy-gssd-pipe.patch"
 
   patch -Np1 -i "${srcdir}/rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-notification-fails.patch"
+
+  # Fix CVE-2014-0038
+  patch -p1 -i "${srcdir}/0001-x86-x32-Correct-invalid-use-of-user-timespec-in-the-.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
