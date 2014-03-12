@@ -5,7 +5,7 @@
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-xps13       # Build kernel with a different name
 _srcname=linux-3.13
-pkgver=3.13.5
+pkgver=3.13.6
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -26,13 +26,13 @@ source=("http://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
         '0004-rpc_pipe-remove-the-clntXX-dir-if-creating-the-pipe-.patch'
         '0005-sunrpc-add-an-info-file-for-the-dummy-gssd-pipe.patch'
         '0006-rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-no.patch'
-        '0001-SUNRPC-Ensure-that-gss_auth-isn-t-freed-before-its-u.patch'
         '0001-syscalls.h-use-gcc-alias-instead-of-assembler-aliase.patch'
+        '0001-Bluetooth-allocate-static-minor-for-vhci.patch'
         'i8042-fix-aliases.patch'
         'xps13.patch'
         )
 md5sums=('0ecbaf65c00374eb4a826c2f9f37606f'
-         '114c391a592131f1c12544e063173a45'
+         'a9b131a589a176b4c437b8ca4557b85e'
          'ba4468d313adfaf22368add7f58204aa'
          '035bb27dac306f5c028d96cad14bb249'
          'eb14dcfd80c00852ef81ded6e826826a'
@@ -44,8 +44,8 @@ md5sums=('0ecbaf65c00374eb4a826c2f9f37606f'
          '10dbaf863e22b2437e68f9190d65c861'
          'd5907a721b97299f0685c583499f7820'
          'a724515b350b29c53f20e631c6cf9a14'
-         '1ae4ec847f41fa1b6d488f956e94c893'
          'e6fa278c092ad83780e2dd0568e24ca6'
+         '06f1751777e0772c18c3fa4fbae91aa5'
          '93dbf73af819b77f03453a9c6de2bb47'
          'b1607a002a3d1d30a1724218ffec5217')
 
@@ -68,9 +68,6 @@ prepare() {
   # allow Checkpoint/restore (for criu) without EXPERT=y
   patch -p1 -i "${srcdir}/criu-no-expert.patch"
 
-  # apply the xps 13 cypress touchpad simulated multitouch patch
-  patch -Np1 -i "${srcdir}/xps13.patch"
-
   # fix 15 seocnds nfs delay
   # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=4b9a445e3eeb8bd9278b1ae51c1b3a651e370cd6
   patch -p1 -i "${srcdir}/0001-sunrpc-create-a-new-dummy-pipe-for-gssd-to-hold-open.patch"
@@ -87,15 +84,17 @@ prepare() {
   # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=23e66ba97127ff3b064d4c6c5138aa34eafc492f
   patch -p1 -i "${srcdir}/0006-rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-no.patch"
 
-  # Fix FS#38921
-  # http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=9eb2ddb48ce3a7bd745c14a933112994647fa3cd
-  patch -p1 -i "${srcdir}/0001-SUNRPC-Ensure-that-gss_auth-isn-t-freed-before-its-u.patch"
-
   # Fix symbols: Revert http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=83460ec8dcac14142e7860a01fa59c267ac4657c
   patch -Rp1 -i "${srcdir}/0001-syscalls.h-use-gcc-alias-instead-of-assembler-aliase.patch"
 
   # Fix i8042 aliases
   patch -p1 -i "${srcdir}/i8042-fix-aliases.patch"
+
+  # Fix vhci warning in kmod (to restore every kernel maintainer's sanity)
+  patch -p1 -i "${srcdir}/0001-Bluetooth-allocate-static-minor-for-vhci.patch"
+
+  # apply the xps 13 cypress touchpad simulated multitouch patch
+  patch -Np1 -i "${srcdir}/xps13.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
