@@ -22,7 +22,7 @@ If you would just like to patch your own kernel on Arch or any other distributio
 Usage
 =====
 
-The manual installation option is available below. Automated installtion will be included when the package is on the AUR.
+The manual installation option is available below. Automated installation will be included when the package is on the AUR.
 
 Manual Install
 --------------
