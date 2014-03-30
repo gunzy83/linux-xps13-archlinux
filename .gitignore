@@ -9,6 +9,8 @@
 !config
 !config.x86_64
 !ChangeLog
+!README.md
+!COPYING
  
 # differences and patches
 !*.diff

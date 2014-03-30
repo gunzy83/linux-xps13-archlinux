@@ -1,6 +1,7 @@
 # $Id: PKGBUILD 206322 2014-02-23 22:56:33Z thomas $
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
-# Maintainer: Thomas Baechler <thomas@archlinux.org>
+# Maintainer: Ross Williams <gunzy83au_at_gmail_dot_com>
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-xps13       # Build kernel with a different name
@@ -8,7 +9,7 @@ _srcname=linux-3.13
 pkgver=3.13.6
 pkgrel=1
 arch=('i686' 'x86_64')
-url="http://www.kernel.org/"
+url="https://github.com/gunzy83/linux-xps13-archlinux"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
 options=('!strip')
@@ -358,5 +359,8 @@ for _p in ${pkgname[@]}; do
     _package${_p#${pkgbase}}
   }"
 done
+
+# Global pkgdesc and depends are here so that they will be picked up by AUR
+pkgdesc='Linux Kernel and modules with the multitouch patches for the Cypress PS2 Trackpad found in the Dell XPS 13 Ultrabook.'
 
 # vim:set ts=8 sts=2 sw=2 et:
