@@ -22,7 +22,7 @@ If you would just like to patch your own kernel on Arch or any other distributio
 Usage
 =====
 
-Manual and automated installation options are available below.
+The manual installation option is available below. Automated installtion will be included when the package is on the AUR.
 
 Manual Install
 --------------
@@ -31,8 +31,8 @@ Manual Install
 
 Acquire the package source from Github:
 
-$ git clone https://github.com/gunzy83/linux-xps13-archlinux.git
-$ cd linux-xps13-archlinux
+	$ git clone https://github.com/gunzy83/linux-xps13-archlinux.git
+	$ cd linux-xps13-archlinux
 
 You are now ready to build the kernel.
 
@@ -40,7 +40,7 @@ You are now ready to build the kernel.
 
 To build the kernel run the following command:
 
-$ makepkg -s
+	$ makepkg -s
 
 The *-s* option means that makepkg will call pacman to download and install dependencies as root.
 
@@ -48,7 +48,7 @@ The *-s* option means that makepkg will call pacman to download and install depe
 
 Install the custom kernel with docs and header files:
 
-$ pacman -U *.pkg.tar.xz
+	$ pacman -U *.pkg.tar.xz
 
 See the documentation for your [bootloader](https://wiki.archlinux.org/index.php/Boot_loaders) to add a new entry for this kernel.
 
@@ -64,46 +64,45 @@ Install the following packages and dependencies as required:
 
 The standard configuration file provided by xf86-input-synaptics captures certain events when using 2 and 3 fingers and prevents them from registering with Touchégg. The following is a section of my **/etc/X11/xorg.conf.d/50-synaptics.conf** file that allows 2 and 3 finger gestures to register in Touchégg (and some tweaks that improve behaviour of the trackpad):
 
-$ ...
-$
-$ Section "InputClass"
-$ 	Identifier "touchpad catchall"
-$ 	Driver "synaptics"
-$ 	MatchIsTouchpad "on"
-$ 	Option "CircularScrolling" "0"
-$ 	Option "Protocol" "event"
-$ 	Option "FingerLow" "10"
-$	Option "FingerHigh" "40"
-$ 	Option "MinSpeed" "0.4"        
-$ 	Option "MaxSpeed" "2"
-$ 	Option "AccelFactor" "0.8"
-$ 	Option "EmulateTwoFingerMinW" "8" 
-$ 	Option "EmulateTwoFingerMinZ" "10"
-$ 	Option "HorizScrollDelta" "100"
-$ 	Option "VertScrollDelta" "15"
-$ 	Option "TapButton1" "1"
-$ 	Option "PalmDetect" "1"
-$ 	Option "AreaRightEdge" "1020"
-$ 	Option "AreaTopEdge" "40"
-$ 	Option "FastTaps" "0"
-$ 	Option "MaxTapTime" "100"
-$ 	**Option "TapButton2" "0"**
-$ 	**Option "TapButton3" "0"**
-$ 	**Option "ClickFinger2" "0"**
-$ 	**Option "ClickFinger3" "0"**
-$ 	Option "HorizTwoFingerScroll" "0"
-$   Option "VertTwoFingerScroll" "0"
-$ 	MatchDevicePath "/dev/input/event*"
-$ EndSection
-$
-$ ...
+	...
+	Section "InputClass"
+		Identifier "touchpad catchall"
+		Driver "synaptics"
+		MatchIsTouchpad "on"
+		Option "CircularScrolling" "0"
+		Option "Protocol" "event"
+		Option "FingerLow" "10"
+		Option "FingerHigh" "40"
+		Option "MinSpeed" "0.4"        
+		Option "MaxSpeed" "2"
+		Option "AccelFactor" "0.8"
+		Option "EmulateTwoFingerMinW" "8" 
+		Option "EmulateTwoFingerMinZ" "10"
+		Option "HorizScrollDelta" "100"
+		Option "VertScrollDelta" "15"
+		Option "TapButton1" "1"
+		Option "PalmDetect" "1"
+		Option "AreaRightEdge" "1020"
+		Option "AreaTopEdge" "40"
+		Option "FastTaps" "0"
+		Option "MaxTapTime" "100"
+		**Option "TapButton2" "0"**
+		**Option "TapButton3" "0"**
+		**Option "ClickFinger2" "0"**
+		**Option "ClickFinger3" "0"**
+		Option "HorizTwoFingerScroll" "0"
+		Option "VertTwoFingerScroll" "0"
+		MatchDevicePath "/dev/input/event*"
+	EndSection
+	
+	...
 
 Copy the Touchégg configuration file to the correct location in your home directory.
 
-$ mkdir -p ~/.config/touchegg
-$ cp /usr/share/touchegg/touchegg.conf ~/.config/touchegg/touchegg.conf
+	$ mkdir -p ~/.config/touchegg
+	$ cp /usr/share/touchegg/touchegg.conf ~/.config/touchegg/touchegg.conf
 
-From here you have to tailor your configuration file and desktop environment shotcuts to perform the desired action when you perform a gesture. See the official Touchégg Wiki for details: [https://code.google.com/p/touchegg/wiki/Main}(https://code.google.com/p/touchegg/wiki/Main)]
+From here you have to tailor your configuration file and desktop environment shotcuts to perform the desired action when you perform a gesture. See the official Touchégg Wiki for details: [https://code.google.com/p/touchegg/wiki/Main](https://code.google.com/p/touchegg/wiki/Main)
 
 Why this works
 ==============
