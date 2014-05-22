@@ -5,53 +5,54 @@
 
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-xps13       # Build kernel with a different name
-_srcname=linux-3.13
-pkgver=3.13.6
+_srcname=linux-3.14
+pkgver=3.14.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/gunzy83/linux-xps13-archlinux"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
 options=('!strip')
-source=("http://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
-        "http://www.kernel.org/pub/linux/kernel/v3.x/patch-${pkgver}.xz"
+source=("https://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
+        "https://www.kernel.org/pub/linux/kernel/v3.x/patch-${pkgver}.xz"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        'criu-no-expert.patch'
-        '0001-sunrpc-create-a-new-dummy-pipe-for-gssd-to-hold-open.patch'
-        '0002-sunrpc-replace-sunrpc_net-gssd_running-flag-with-a-m.patch'
-        '0003-nfs-check-if-gssd-is-running-before-attempting-to-us.patch'
-        '0004-rpc_pipe-remove-the-clntXX-dir-if-creating-the-pipe-.patch'
-        '0005-sunrpc-add-an-info-file-for-the-dummy-gssd-pipe.patch'
-        '0006-rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-no.patch'
-        '0001-syscalls.h-use-gcc-alias-instead-of-assembler-aliase.patch'
         '0001-Bluetooth-allocate-static-minor-for-vhci.patch'
-        'i8042-fix-aliases.patch'
+        '0002-module-allow-multiple-calls-to-MODULE_DEVICE_TABLE-p.patch'
+        '0003-module-remove-MODULE_GENERIC_TABLE.patch'
+        '0004-fs-Don-t-return-0-from-get_anon_bdev.patch'
+        '0005-Revert-Bluetooth-Enable-autosuspend-for-Intel-Blueto.patch'
+        '0006-genksyms-fix-typeof-handling.patch'
+        '0010-iwlwifi-mvm-delay-enabling-smart-FIFO-until-after-be.patch'
+        '0011-kernfs-fix-removed-error-check.patch'
+        '0012-fix-saa7134.patch'
+        '0013-net-Start-with-correct-mac_len-in-skb_network_protocol.patch'
+        '0015-fix-xsdt-validation.patch'
         'xps13.patch'
         )
-md5sums=('0ecbaf65c00374eb4a826c2f9f37606f'
-         'a9b131a589a176b4c437b8ca4557b85e'
-         'ba4468d313adfaf22368add7f58204aa'
-         '035bb27dac306f5c028d96cad14bb249'
-         'eb14dcfd80c00852ef81ded6e826826a'
-         '98beb36f9b8cf16e58de2483ea9985e3'
-         '989dc54ff8b179b0f80333cc97c0d43f'
-         'dd2adb99cd3feed6f11022562901965c'
-         'b00cc399d3797cb0793e18b5bf387a50'
-         '7cbd2349cdf046acc37b652c06ba36be'
-         '10dbaf863e22b2437e68f9190d65c861'
-         'd5907a721b97299f0685c583499f7820'
-         'a724515b350b29c53f20e631c6cf9a14'
-         'e6fa278c092ad83780e2dd0568e24ca6'
-         '06f1751777e0772c18c3fa4fbae91aa5'
-         '93dbf73af819b77f03453a9c6de2bb47'
-         'b1607a002a3d1d30a1724218ffec5217')
-
+sha256sums=('61558aa490855f42b6340d1a1596be47454909629327c49a5e4e10268065dffa'
+            'af640ea64e923d525a8238832e8452381e6dc76a3bf28046411cadd67c408114'
+            'c01d212694eddcf694c55e0943bf3336b6e1ff41b90ac1cdc88b26789785ed45'
+            '9a33feb450005a43bf9aa8fbb74b2e463c72ea17ad06bab3357f8a0a89088e85'
+            'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
+            'faced4eb4c47c4eb1a9ee8a5bf8a7c4b49d6b4d78efbe426e410730e6267d182'
+            '6d72e14552df59e6310f16c176806c408355951724cd5b48a47bf01591b8be02'
+            '52dec83a8805a8642d74d764494acda863e0aa23e3d249e80d4b457e20a3fd29'
+            '65d58f63215ee3c5f9c4fc6bce36fc5311a6c7dbdbe1ad29de40647b47ff9c0d'
+            '1e1ae0f31f722e80da083ecada1f1be57f9ddad133941820c4483b0240e494c1'
+            '3fffb01cf97a5a7ab9601cb277d2468c0fb1e1cceba4225915f3ffae3a5694ec'
+            'cf2e7a2d00787f754028e7459688c2755a406e632ce48b60952fa4ff7ed6f4b7'
+            'c0af4622f75c89fef62183e18b7d49998228d4eaa906c6accaf4aa4ff0134f85'
+            '04f44bf5c181d6dc31905937c1bdccb0f5aecaad3a579e99b302502b9cbe0f7a'
+            '79359454c9d8446eb55add2b1cdbf8332bd67dafb01fefb5b1ca090225f64d18'
+            'f2a5e22c1ba6e9b8a32a7bd4a5327ee95538aa10edcee3cd12578f8ff49bf6be'
+            '384dd13fd4248fd6809da8c6ae29ced55d4a5cacc33ac2ae7522093ec0fb26d4'
+	    'f7723d4a2e07da82b3698fb4edb5cf1ca0ccbbc3e789247118fcb7a44d89cdf2')
+	    
 _kernelname=${pkgbase#linux}
-
 prepare() {
   cd "${srcdir}/${_srcname}"
 
@@ -66,33 +67,48 @@ prepare() {
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
 
-  # allow Checkpoint/restore (for criu) without EXPERT=y
-  patch -p1 -i "${srcdir}/criu-no-expert.patch"
-
-  # fix 15 seocnds nfs delay
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=4b9a445e3eeb8bd9278b1ae51c1b3a651e370cd6
-  patch -p1 -i "${srcdir}/0001-sunrpc-create-a-new-dummy-pipe-for-gssd-to-hold-open.patch"
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=89f842435c630f8426f414e6030bc2ffea0d6f81
-  patch -p1 -i "${srcdir}/0002-sunrpc-replace-sunrpc_net-gssd_running-flag-with-a-m.patch"
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=6aa23d76a7b549521a03b63b6d5b7880ea87eab7
-  patch -p1 -i "${srcdir}/0003-nfs-check-if-gssd-is-running-before-attempting-to-us.patch"
-
-  # fix nfs kernel oops
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=3396f92f8be606ea485b0a82d4e7749a448b013b
-  patch -p1 -i "${srcdir}/0004-rpc_pipe-remove-the-clntXX-dir-if-creating-the-pipe-.patch"
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=e2f0c83a9de331d9352185ca3642616c13127539
-  patch -p1 -i "${srcdir}/0005-sunrpc-add-an-info-file-for-the-dummy-gssd-pipe.patch"
-  # http://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=23e66ba97127ff3b064d4c6c5138aa34eafc492f
-  patch -p1 -i "${srcdir}/0006-rpc_pipe-fix-cleanup-of-dummy-gssd-directory-when-no.patch"
-
-  # Fix symbols: Revert http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=83460ec8dcac14142e7860a01fa59c267ac4657c
-  patch -Rp1 -i "${srcdir}/0001-syscalls.h-use-gcc-alias-instead-of-assembler-aliase.patch"
-
-  # Fix i8042 aliases
-  patch -p1 -i "${srcdir}/i8042-fix-aliases.patch"
-
   # Fix vhci warning in kmod (to restore every kernel maintainer's sanity)
   patch -p1 -i "${srcdir}/0001-Bluetooth-allocate-static-minor-for-vhci.patch"
+
+  # Fix atkbd aliases
+  patch -p1 -i "${srcdir}/0002-module-allow-multiple-calls-to-MODULE_DEVICE_TABLE-p.patch"
+  patch -p1 -i "${srcdir}/0003-module-remove-MODULE_GENERIC_TABLE.patch"
+
+  # Fix various bugs caused by rootfs having FSID 0
+  # See http://www.spinics.net/lists/kernel/msg1716924.html
+  patch -p1 -i "${srcdir}/0004-fs-Don-t-return-0-from-get_anon_bdev.patch"
+
+  # Disable usb autosuspend for intel btusb
+  # See http://www.spinics.net/lists/kernel/msg1716461.html
+  # Until a solution is found, make sure the driver leaves autosuspend alone
+  patch -p1 -i "${srcdir}/0005-Revert-Bluetooth-Enable-autosuspend-for-Intel-Blueto.patch"
+
+  # Fix generation of symbol CRCs
+  # http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=dc53324060f324e8af6867f57bf4891c13c6ef18
+  patch -p1 -i "${srcdir}/0006-genksyms-fix-typeof-handling.patch"
+
+  # https://git.kernel.org/cgit/linux/kernel/git/iwlwifi/iwlwifi-fixes.git/commit/?id=12f853a89e29f50b17698e17e73c328a35f1498d
+  # FS#39815
+  patch -p1 -i "${srcdir}/0010-iwlwifi-mvm-delay-enabling-smart-FIFO-until-after-be.patch"
+  
+  # fix Xorg crash with i810 chipset due to wrong removed error check
+  # References: http://lkml.kernel.org/g/533D01BD.1010200@googlemail.com
+  patch -Np1 -i "${srcdir}/0011-kernfs-fix-removed-error-check.patch"
+
+  # fix saa7134 video
+  # https://bugs.archlinux.org/task/39904
+  # https://bugzilla.kernel.org/show_bug.cgi?id=73361
+  patch -Np1 -i "${srcdir}/0012-fix-saa7134.patch"
+
+  # fix tun/openvpn performance
+  # https://bugs.archlinux.org/task/40089
+  # https://bugzilla.kernel.org/show_bug.cgi?id=74051
+  patch -Np1 -i "${srcdir}/0013-net-Start-with-correct-mac_len-in-skb_network_protocol.patch"
+
+  # fix xsdt validation bug
+  # https://bugs.archlinux.org/task/39811
+  # https://bugzilla.kernel.org/show_bug.cgi?id=73911
+  patch -Np1 -i "${srcdir}/0015-fix-xsdt-validation.patch"
 
   # apply the xps 13 cypress touchpad simulated multitouch patch
   patch -Np1 -i "${srcdir}/xps13.patch"
@@ -243,26 +259,6 @@ _package-headers() {
   fi
 
   cp arch/${KARCH}/kernel/asm-offsets.s "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/kernel/"
-
-  # add headers for lirc package
-  # pci
-  for i in bt8xx cx88 saa7134; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/pci/${i}"
-    cp -a drivers/media/pci/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/pci/${i}"
-  done
-  # usb
-  for i in cpia2 em28xx pwc sn9c102; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/${i}"
-    cp -a drivers/media/usb/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/${i}"
-  done
-  # i2c
-  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c"
-  cp drivers/media/i2c/*.h  "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
-  for i in cx25840; do
-    mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/${i}"
-    cp -a drivers/media/i2c/${i}/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/${i}"
-  done
-
   # add docbook makefile
   install -D -m644 Documentation/DocBook/Makefile \
     "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/DocBook/Makefile"
@@ -294,6 +290,7 @@ _package-headers() {
   # http://bugs.archlinux.org/task/13146
   mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
   cp drivers/media/dvb-frontends/lgdt330x.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
   cp drivers/media/i2c/msp3400-driver.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
 
   # add dvb headers
