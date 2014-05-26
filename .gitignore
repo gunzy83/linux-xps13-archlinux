@@ -15,3 +15,7 @@
 # differences and patches
 !*.diff
 !*.patch
+
+# scripts
+!*.py
+!*.sh

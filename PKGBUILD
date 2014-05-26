@@ -1,24 +1,21 @@
-# $Id: PKGBUILD 206322 2014-02-23 22:56:33Z thomas $
 # Maintainer: Ross Williams <gunzy83au_at_gmail_dot_com>
-# Contributor: Tobias Powalowski <tpowa@archlinux.org>
-# Contributor: Thomas Baechler <thomas@archlinux.org>
 
-#pkgbase=linux               # Build stock -ARCH kernel
-pkgbase=linux-xps13       # Build kernel with a different name
+pkgname=linux-xps13
+true && pkgname=(linux-xps13 linux-xps13-headers)
+_kernelname=-xps13
 _srcname=linux-3.14
 pkgver=3.14.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/gunzy83/linux-xps13-archlinux"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
+makedepends=('kmod' 'inetutils' 'bc')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v3.x/patch-${pkgver}.xz"
-        # the main kernel config files
-        'config' 'config.x86_64'
-        # standard config files for mkinitcpio ramdisk
-        'linux.preset'
+        'config'
+        'config.x86_64'
+        'linux-xps13.preset'
         'change-default-console-loglevel.patch'
         '0001-Bluetooth-allocate-static-minor-for-vhci.patch'
         '0002-module-allow-multiple-calls-to-MODULE_DEVICE_TABLE-p.patch'
@@ -37,7 +34,7 @@ sha256sums=('61558aa490855f42b6340d1a1596be47454909629327c49a5e4e10268065dffa'
             'af640ea64e923d525a8238832e8452381e6dc76a3bf28046411cadd67c408114'
             'c01d212694eddcf694c55e0943bf3336b6e1ff41b90ac1cdc88b26789785ed45'
             '9a33feb450005a43bf9aa8fbb74b2e463c72ea17ad06bab3357f8a0a89088e85'
-            'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
+            'bf7ccd0ca928dc47b7e2a87d08d8f19faafbb21ff957e22f1ee78a180961047e'
             'faced4eb4c47c4eb1a9ee8a5bf8a7c4b49d6b4d78efbe426e410730e6267d182'
             '6d72e14552df59e6310f16c176806c408355951724cd5b48a47bf01591b8be02'
             '52dec83a8805a8642d74d764494acda863e0aa23e3d249e80d4b457e20a3fd29'
@@ -50,9 +47,8 @@ sha256sums=('61558aa490855f42b6340d1a1596be47454909629327c49a5e4e10268065dffa'
             '79359454c9d8446eb55add2b1cdbf8332bd67dafb01fefb5b1ca090225f64d18'
             'f2a5e22c1ba6e9b8a32a7bd4a5327ee95538aa10edcee3cd12578f8ff49bf6be'
             '384dd13fd4248fd6809da8c6ae29ced55d4a5cacc33ac2ae7522093ec0fb26d4'
-	    'f7723d4a2e07da82b3698fb4edb5cf1ca0ccbbc3e789247118fcb7a44d89cdf2')
+	          'f7723d4a2e07da82b3698fb4edb5cf1ca0ccbbc3e789247118fcb7a44d89cdf2')
 	    
-_kernelname=${pkgbase#linux}
 prepare() {
   cd "${srcdir}/${_srcname}"
 
@@ -111,7 +107,11 @@ prepare() {
   patch -Np1 -i "${srcdir}/0015-fix-xsdt-validation.patch"
 
   # apply the xps 13 cypress touchpad simulated multitouch patch
+  msg "Patching source with XPS13 touchpad patch."
   patch -Np1 -i "${srcdir}/xps13.patch"
+
+  msg "Running make mrproper to clean source tree"
+  make mrproper
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
@@ -147,20 +147,20 @@ prepare() {
 
 build() {
   cd "${srcdir}/${_srcname}"
-
+  msg "Running make bzImage and modules"
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
-_package() {
-  pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
-  [ "${pkgbase}" = "linux" ] && groups=('base')
+package_linux-xps13() {
+  _Kpkgdesc='Arch Linux kernel patched for the Dell XPS13 Ultrabook.'
+  pkgdesc="${_Kpkgdesc}"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
-  provides=("kernel26${_kernelname}=${pkgver}")
-  conflicts=("kernel26${_kernelname}")
-  replaces=("kernel26${_kernelname}")
-  backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install=linux.install
+  provides=("linux-xps13=${pkgver}")
+  conflicts=("kernel26-xps13")
+  replaces=("kernel26-xps13")
+  backup=("etc/mkinitcpio.d/linux-xps13.preset")
+  install=linux-xps13.install
 
   cd "${srcdir}/${_srcname}"
 
@@ -173,21 +173,21 @@ _package() {
 
   mkdir -p "${pkgdir}"/{lib/modules,lib/firmware,boot}
   make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}" modules_install
-  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${pkgbase}"
+  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-linux-xps13"
 
   # set correct depmod command for install
   cp -f "${startdir}/${install}" "${startdir}/${install}.pkg"
   true && install=${install}.pkg
   sed \
-    -e  "s/KERNEL_NAME=.*/KERNEL_NAME=${_kernelname}/" \
+    -e  "s/KERNEL_NAME=.*/KERNEL_NAME=-xps13/" \
     -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" \
     -i "${startdir}/${install}"
 
   # install mkinitcpio preset file for kernel
-  install -D -m644 "${srcdir}/linux.preset" "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+  install -D -m644 "${srcdir}/linux-xps13.preset" "${pkgdir}/etc/mkinitcpio.d/linux-xps13.preset"
   sed \
-    -e "1s|'linux.*'|'${pkgbase}'|" \
-    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-${pkgbase}\"|" \
+    -e "1s|'linux.*'|'linux-xps13'|" \
+    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-linux-xps13\"|" \
     -e "s|default_image=.*|default_image=\"/boot/initramfs-${pkgbase}.img\"|" \
     -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-${pkgbase}-fallback.img\"|" \
     -i "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
@@ -201,8 +201,8 @@ _package() {
   # make room for external modules
   ln -s "../extramodules-${_basekernel}${_kernelname:--ARCH}" "${pkgdir}/lib/modules/${_kernver}/extramodules"
   # add real version for building modules and running depmod from post_install/upgrade
-  mkdir -p "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:--ARCH}"
-  echo "${_kernver}" > "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:--ARCH}/version"
+  mkdir -p "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:xps13}"
+  echo "${_kernver}" > "${pkgdir}/lib/modules/extramodules-${_basekernel}${_kernelname:xps13}/version"
 
   # Now we call depmod...
   depmod -b "${pkgdir}" -F System.map "${_kernver}"
@@ -215,11 +215,13 @@ _package() {
   install -D -m644 vmlinux "${pkgdir}/usr/lib/modules/${_kernver}/build/vmlinux" 
 }
 
-_package-headers() {
-  pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
-  provides=("kernel26${_kernelname}-headers=${pkgver}")
-  conflicts=("kernel26${_kernelname}-headers")
-  replaces=("kernel26${_kernelname}-headers")
+package_linux-xps13-headers() {
+  _Hpkgdesc='Header files for linux-xps13.'
+  pkgdesc="${_Hpkgdesc}"
+  depends=('linux-xps13')
+  provides=("linux-xps13-headers=${pkgver}" "linux-headers=${pkgver}")
+  conflicts=("kernel26-xps13-headers")
+  replaces=("kernel26-xps13-headers")
 
   install -dm755 "${pkgdir}/usr/lib/modules/${_kernver}"
 
@@ -333,31 +335,5 @@ _package-headers() {
   rm -rf "${pkgdir}"/usr/lib/modules/${_kernver}/build/arch/{alpha,arc,arm,arm26,arm64,avr32,blackfin,c6x,cris,frv,h8300,hexagon,ia64,m32r,m68k,m68knommu,metag,mips,microblaze,mn10300,openrisc,parisc,powerpc,ppc,s390,score,sh,sh64,sparc,sparc64,tile,unicore32,um,v850,xtensa}
 }
 
-_package-docs() {
-  pkgdesc="Kernel hackers manual - HTML documentation that comes with the ${pkgbase/linux/Linux} kernel"
-  provides=("kernel26${_kernelname}-docs=${pkgver}")
-  conflicts=("kernel26${_kernelname}-docs")
-  replaces=("kernel26${_kernelname}-docs")
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build"
-  cp -al Documentation "${pkgdir}/usr/lib/modules/${_kernver}/build"
-  find "${pkgdir}" -type f -exec chmod 444 {} \;
-  find "${pkgdir}" -type d -exec chmod 755 {} \;
-
-  # remove a file already in linux package
-  rm -f "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/DocBook/Makefile"
-}
-
-pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
-for _p in ${pkgname[@]}; do
-  eval "package_${_p}() {
-    _package${_p#${pkgbase}}
-  }"
-done
-
 # Global pkgdesc and depends are here so that they will be picked up by AUR
 pkgdesc='Linux Kernel and modules with the multitouch patches for the Cypress PS2 Trackpad found in the Dell XPS 13 Ultrabook.'
-
-# vim:set ts=8 sts=2 sw=2 et:
