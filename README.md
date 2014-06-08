@@ -22,17 +22,23 @@ If you would just like to patch your own kernel on Arch or any other distributio
 Usage
 =====
 
-The manual installation option is available below. Automated installation will be included when the package is on the AUR.
-
 Manual Install
 --------------
 
 ### Aquire the Source
 
-Acquire the package source from Github:
+There are two methods for acquiring the source:
+
+From **Github**:
 
 	$ git clone https://github.com/gunzy83/linux-xps13-archlinux.git
 	$ cd linux-xps13-archlinux
+
+From the **AUR**:
+
+	$ curl -O https://aur.archlinux.org/packages/li/linux-xps13/linux-xps13.tar.gz
+	$ tar -xf linux-xps13.tar.gz
+	$ cd linux-xps13
 
 You are now ready to build the kernel.
 
@@ -51,6 +57,21 @@ Install the custom kernel with docs and header files:
 	$ pacman -U *.pkg.tar.xz
 
 See the documentation for your [bootloader](https://wiki.archlinux.org/index.php/Boot_loaders) to add a new entry for this kernel.
+
+Automated Install
+-----------------
+
+You can install the custom kernel in one step using an [AUR Helper](https://wiki.archlinux.org/index.php/AUR_Helpers) like [Yaourt](https://wiki.archlinux.org/index.php/yaourt) or [Aura](https://wiki.archlinux.org/index.php/aura).
+
+### Yaourt
+
+	$ yaourt -S linux-xps13
+
+### Aura
+	
+	$ aura -Ax linux-xps13
+
+Remember that even with this method you still need to update your [bootloader](https://wiki.archlinux.org/index.php/Boot_loaders) to add a new entry for this kernel.
 
 Set up Synaptics and Touchégg
 -----------------------------
@@ -86,10 +107,10 @@ The standard configuration file provided by xf86-input-synaptics captures certai
 		Option "AreaTopEdge" "40"
 		Option "FastTaps" "0"
 		Option "MaxTapTime" "100"
-		**Option "TapButton2" "0"**
-		**Option "TapButton3" "0"**
-		**Option "ClickFinger2" "0"**
-		**Option "ClickFinger3" "0"**
+		Option "TapButton2" "0"
+		Option "TapButton3" "0"
+		Option "ClickFinger2" "0"
+		Option "ClickFinger3" "0"
 		Option "HorizTwoFingerScroll" "0"
 		Option "VertTwoFingerScroll" "0"
 		MatchDevicePath "/dev/input/event*"
@@ -112,7 +133,6 @@ The standard cypress_ps2 driver identifies itself as a Semi-multitouch device bu
 Future Plans
 ============
 
-* Modify PKGBUILD to be accepted on the AUR and easily installed with an AUR helper.
 * Improve gesture recognition accuracy for non-swipe gestures.
 * Add further patches specific to optimising Arch Linux on the Dell XPS 13 (may not be touchpad related).
 * Investigate possibility of getting the patch accepted upstream.
