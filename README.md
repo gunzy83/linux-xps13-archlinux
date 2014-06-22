@@ -1,11 +1,11 @@
 Description
 ===========
 
-This is a custom Linux kernel build for Arch Linux based on the [Arch Build System](https://wiki.archlinux.org/index.php/Arch_Build_System) [PKGBUILD](https://wiki.archlinux.org/index.php/PKGBUILD). It contains a patch for the Dell XPS 13 touchpad (**cypress_ps2**) that enables the use of [Touchégg](https://code.google.com/p/touchegg/) for gesture recognition. The patch was sourced from a diff of the Arch Linux kernel source and the Ubuntu kernel source (which has patches that have not been mainlined) for the **cypress_ps2** driver.  
+This is a custom Linux kernel build for Arch Linux based on the [Arch Build System](https://wiki.archlinux.org/index.php/Arch_Build_System) [PKGBUILD](https://wiki.archlinux.org/index.php/PKGBUILD). It contains a patch for the Dell XPS 13 (L321x and L322x) touchpad (**cypress_ps2**) that enables the use of [Touchégg](https://code.google.com/p/touchegg/) for gesture recognition. The patch was sourced from a diff of the Arch Linux kernel source and the Ubuntu kernel source (which has patches that have not been mainlined) for the **cypress_ps2** driver.  
 
 Currently this allows for recognition of 2, 3 and 4 finger swipe gestures in the vertical and horizontal and application specific gestures through [Touchégg](https://code.google.com/p/touchegg/).
 
-This may also work on other hardware that had the same or similar touchpad but this is only tested on the Dell XPS 13.
+This may also work on other hardware that had the same or similar touchpad but this is only tested on the Dell XPS 13 L322x (Note: XPS 13 9993 uses the Synaptic touchpad driver).
 
 Requirements
 ============
