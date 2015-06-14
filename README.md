@@ -1,3 +1,8 @@
+NOTE:
+=====
+
+THIS PROJECT HAS MOVED WITH THE UPGRADE TO GIT BASED AUR4. PLEASE SEE [https://github.com/gunzy83/linux-xps13-aur](https://github.com/gunzy83/linux-xps13-aur) FOR UPDATES!
+
 Linux XPS13 Arch Linux
 ======================
 
